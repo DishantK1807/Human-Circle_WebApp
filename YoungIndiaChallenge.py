@@ -1,14 +1,21 @@
+import hashlib
+from codecs import encode
 from tempfile import gettempdir
 
-from flask import Flask, render_template, request
+from flask import Flask, request
+from flask_mysqldb import MySQL
 from flask_session import Session
-from flask_sqlalchemy import SQLAlchemy
 
 from helpers import *
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://root:456123@localhost/yic'
-db = SQLAlchemy(app)
+
+app.config['MYSQL_HOST'] = 'localhost'
+app.config['MYSQL_USER'] = 'root'
+app.config['MYSQL_PASSWORD'] = '456123'
+app.config['MYSQL_DB'] = 'yic'
+app.config['MYSQL_CURSORCLASS'] = "DictCursor"
+mysql = MySQL(app)
 
 # configure session to use filesystem (instead of signed cookies)
 app.config["SESSION_FILE_DIR"] = gettempdir()
@@ -41,9 +48,17 @@ def login():
             render_template("failure.html", msg="Username/Password fields cannot be empty")
 
         # query database for username
-        # rows = db.execute("SELECT * FROM users WHERE username = :username", username=request.form.get("username"))
+        db = mysql.connection.cursor()
+        rows = db.execute("SELECT * FROM users WHERE uname = '{}'".format(request.form.get("username")))
+        rv = db.fetchone()
+        if rows or rv["pass"] == encode(hashlib.sha1(encode(request.form.get("password", 'utf-8'))).digest(),
+                                        'hex_codec').decode('utf-8'):
 
-        return redirect(url_for(index))
+            redirect(url_for(index))
+        else:
+            return render_template("failure.html", msg="Invalid Username And/Or Password")
+
+            # return redirect(url_for(index))
 
     else:
         return render_template("login.html")
@@ -55,4 +70,4 @@ def register():
 
 
 if __name__ == '__main__':
-    app.run()
+    app.run(debug=True)
