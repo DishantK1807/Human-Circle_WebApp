@@ -14,27 +14,27 @@ app.config['MYSQL_HOST']        = 'localhost'
 app.config['MYSQL_USER']        = 'root'
 app.config['MYSQL_PASSWORD']    = '456123'
 app.config['MYSQL_DB']          = 'yic'
-app.config['MYSQL_CURSORCLASS'] = "DictCursor"
+app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
 mysql = MySQL(app)
 
 # configure session to use filesystem (instead of signed cookies)
-app.config["SESSION_FILE_DIR"]  = gettempdir()
-app.config["SESSION_PERMANENT"] = False
-app.config["SESSION_TYPE"]      = "filesystem"
+app.config['SESSION_FILE_DIR']  = gettempdir()
+app.config['SESSION_PERMANENT'] = False
+app.config['SESSION_TYPE']      = 'filesystem'
 Session(app)
 
 
-@app.route("/")
+@app.route('/')
 @login_required
 def index():
-    if session["auth_lvl"]      == 0:
-        return render_template("index_a.html")
-    elif session["auth_lvl"]    == 1:
-        return render_template("index_m.html")
-    elif session["auth_lvl"]    == 2:
-        return render_template("index_i.html")
+    if session['auth_lvl']      == 0:
+        return render_template('index_a.html')
+    elif session['auth_lvl']    == 1:
+        return render_template('index_m.html')
+    elif session['auth_lvl']    == 2:
+        return render_template('index_i.html')
     else:
-        return render_template("index.html")
+        return render_template('index.html')
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -47,7 +47,7 @@ def login():
     # if user reached route via POST (as by submitting a form via POST)
     if request.method == 'POST':
         if not request.form.get("username") or not request.form.get("password"):
-            return render_template("failure.html", msg="Username/Password fields cannot be empty")
+            return render_template('failure.html', msg='Username/Password fields cannot be empty')
 
         # query database for username
         db = mysql.connection.cursor()
@@ -55,19 +55,19 @@ def login():
         rv = db.fetchone()
 
         # verify password
-        if rows or rv["pass"] == encode(hashlib.sha1(encode(request.form.get("password", 'utf-8'))).digest(),
+        if rows or rv['pass'] == encode(hashlib.sha1(encode(request.form.get("password", 'utf-8'))).digest(),
                                         'hex_codec').decode('utf-8'):
             # create session
-            session["user_id"]  = rv["id"]
-            session["auth_lvl"] = int(rv["authlvl"])
-            return redirect(url_for("index"))
+            session['user_id']  = rv['id']
+            session['auth_lvl'] = int(rv['authlvl'])
+            return redirect(url_for('index'))
 
         else:
-            return render_template("failure.html", msg="Invalid Username And/Or Password")
+            return render_template('failure.html', msg="Invalid Username And/Or Password")
 
     # else if user reached route via GET (as by clicking a link or via redirect)
     else:
-        return render_template("login.html")
+        return render_template('login.html')
 
 
 @app.route('/register', methods=['GET', 'POST'])
@@ -82,9 +82,9 @@ def register():
 
         # check if form fields are empty and if entered passwords match
         if not request.form.get("username") or not request.form.get("password"):
-            return render_template("failure.html", msg="Username/Password fields cannot be empty")
+            return render_template('failure.html', msg='Username/Password fields cannot be empty')
         if request.form.get("password") != request.form.get("confirmation"):
-            return render_template("failure.html", msg="Password fields do not match")
+            return render_template('failure.html', msg='Password fields do not match')
 
         # create connection
         db = mysql.connection.cursor()
@@ -94,7 +94,7 @@ def register():
             "SELECT * FROM users WHERE uname = '{0}' UNION SELECT * FROM tempusers WHERE uname = '{1}'".format(
                 request.form.get("username"), request.form.get("username")))
         if rows:
-            return render_template("failure.html", msg="Username Already Exists")
+            return render_template('failure.html', msg='Username Already Exists')
 
         # hash password with SHA-1 algorithm and store it as string
         password = encode(hashlib.sha1(encode(request.form.get("password", 'utf-8'))).digest(),
@@ -117,14 +117,14 @@ def register():
             rv = db.fetchone()
 
             # create session
-            session["user_id"]  = rv["id"]
-            session["auth_lvl"] = int(rv["authlvl"])
+            session['user_id']  = rv['id']
+            session['auth_lvl'] = int(rv['authlvl'])
 
-        return redirect(url_for("index"))
+        return redirect(url_for('index'))
 
     # else if user reached route via GET (as by clicking a link or via redirect)
     else:
-        return render_template("register.html")
+        return render_template('register.html')
 
 
 if __name__ == '__main__':
