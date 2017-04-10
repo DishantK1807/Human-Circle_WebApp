@@ -27,11 +27,11 @@ Session(app)
 @app.route('/')
 @login_required
 def index():
-    if session['auth_lvl']      == 0:
+    if session.get('auth_lvl')      == 0:
         return render_template('index_a.html')
-    elif session['auth_lvl']    == 1:
+    elif session.get('auth_lvl')    == 1:
         return render_template('index_m.html')
-    elif session['auth_lvl']    == 2:
+    elif session.get('auth_lvl')    == 2:
         return render_template('index_i.html')
     else:
         return render_template('index.html')
