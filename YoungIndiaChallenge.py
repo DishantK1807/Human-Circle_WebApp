@@ -27,11 +27,11 @@ Session(app)
 @app.route("/")
 @login_required
 def index():
-    if session["auth_lvl"]    == 0:
+    if session["auth_lvl"]      == 0:
         return render_template("index_a.html")
-    elif session["auth_lvl"]  == 1:
+    elif session["auth_lvl"]    == 1:
         return render_template("index_m.html")
-    elif session["auth_lvl"]  == 2:
+    elif session["auth_lvl"]    == 2:
         return render_template("index_i.html")
     else:
         return render_template("index.html")
@@ -91,8 +91,8 @@ def register():
 
         # query database to see if username already exists
         rows = db.execute(
-                "SELECT * FROM users WHERE uname = '{0}' UNION SELECT * FROM tempusers WHERE uname = '{1}'".format(
-                    request.form.get("username"), request.form.get("username")))
+            "SELECT * FROM users WHERE uname = '{0}' UNION SELECT * FROM tempusers WHERE uname = '{1}'".format(
+                request.form.get("username"), request.form.get("username")))
         if rows:
             return render_template("failure.html", msg="Username Already Exists")
 
@@ -100,16 +100,27 @@ def register():
         password = encode(hashlib.sha1(encode(request.form.get("password", 'utf-8'))).digest(),
                           'hex_codec').decode('utf-8')
 
-
+        # add mentor and interviewer ids to temp table for approval
         if int(request.form.get("auth")) in {0, 1, 2}:
-            db.execute("INSERT INTO tempusers (uname, pass, authlvl) VALUES ('{0}', '{1}', '{2}')".format(
-                            request.form.get("username"), password, request.form.get("auth")))
-        else:
-            db.execute( "INSERT INTO users (uname, pass, authlvl) VALUES ('{0}', '{1}', '{2}')".format(
-                            request.form.get("username"), password, request.form.get("auth")))
-        mysql.connection.commit()
+            db.execute("INSERT IGNORE INTO tempusers (uname, pass, authlvl) VALUES ('{0}', '{1}', '{2}')".format(
+                request.form.get("username"), password, request.form.get("auth")))
+            mysql.connection.commit()
 
-        return render_template("failure.html", msg="Added")
+        # add candidate ids to main table
+        else:
+            db.execute("INSERT IGNORE INTO users (uname, pass, authlvl) VALUES ('{0}', '{1}', '{2}')".format(
+                request.form.get("username"), password, request.form.get("auth")))
+            mysql.connection.commit()
+
+            # get id and authlvl
+            db.execute("SELECT * FROM users WHERE uname = '{}'".format(request.form.get("username")))
+            rv = db.fetchone()
+
+            # create session
+            session["user_id"]  = rv["id"]
+            session["auth_lvl"] = int(rv["authlvl"])
+
+        return redirect(url_for("index"))
 
     # else if user reached route via GET (as by clicking a link or via redirect)
     else:
