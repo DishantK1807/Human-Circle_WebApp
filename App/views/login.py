@@ -1,41 +1,16 @@
-import hashlib
-from codecs import encode
-from tempfile import gettempdir
+# import hashlib
+# from codecs import encode
+# from tempfile import gettempdir
+#
+# from flask import Flask, request, render_template
+# from flask_mysqldb import MySQL
+# from flask_session import Session
+#
+# from App.helpers import *
+# from App import app
+# from App import mysql
 
-from flask import Flask, request
-from flask_mysqldb import MySQL
-from flask_session import Session
-
-from helpers import *
-
-app = Flask(__name__)
-
-app.config['MYSQL_HOST']        = 'localhost'
-app.config['MYSQL_USER']        = 'root'
-app.config['MYSQL_PASSWORD']    = '456123'
-app.config['MYSQL_DB']          = 'yic'
-app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
-mysql = MySQL(app)
-
-# configure session to use filesystem (instead of signed cookies)
-app.config['SESSION_FILE_DIR']  = gettempdir()
-app.config['SESSION_PERMANENT'] = False
-app.config['SESSION_TYPE']      = 'filesystem'
-Session(app)
-
-
-@app.route('/')
-@login_required
-def index():
-    if session.get('auth_lvl')      == 0:
-        return render_template('index_a.html')
-    elif session.get('auth_lvl')    == 1:
-        return render_template('index_m.html')
-    elif session.get('auth_lvl')    == 2:
-        return render_template('index_i.html')
-    else:
-        return render_template('index.html')
-
+from App.views.home import *
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -125,7 +100,3 @@ def register():
     # else if user reached route via GET (as by clicking a link or via redirect)
     else:
         return render_template('register.html')
-
-
-if __name__ == '__main__':
-    app.run(debug=True)
