@@ -12,10 +12,26 @@
 
 from App.views.home import *
 
-def approval(id):
-    if request.method == 'POST':
+def add(username, approval):
+    # create connection
+    db = mysql.connection.cursor()
 
-        return render_template('failure.html', msg="Index Post Request")
+    if approval == "accept":
+        db.execute("SELECT * FROM tempusers WHERE uname = '{}'".format(username))
+        rv = db.fetchone()
+
+        db.execute(
+            "INSERT IGNORE INTO users (uname, pass, fname, lname, email, authlvl) VALUES ('{0}', '{1}', '{2}', '{3}', '{4}', '{5}')".format(
+                rv['uname'], rv['pass'], rv['fname'], rv['lname'], rv['email'], rv['authlvl']))
+        mysql.connection.commit()
+        db.execute("DELETE FROM tempusers WHERE uname = '{}'".format(username))
+        mysql.connection.commit()
+        # return render_template("failure.html", msg="Accepted")
 
     else:
-        return render_template('index_a.html')
+        db.execute("DELETE FROM tempusers WHERE uname = '{}'".format(username))
+        mysql.connection.commit()
+        # return render_template("failure.html", msg=str(username) + "  " + str(approval))
+    return redirect(url_for("index"))
+
+

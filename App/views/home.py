@@ -13,15 +13,23 @@ from App import mysql
 from App.views import admin
 
 
-@app.route('/')
+@app.route('/', methods=['GET', 'POST'])
 @login_required
 def index():
     if session.get('auth_lvl')      == 0:
-        return admin.approval(session.get('user_id'))
+        if request.method == 'POST':
+            return admin.add(request.form.get('username'), request.form.get("approval"))
+        else:
+            db = mysql.connection.cursor()
+            db.execute("SELECT * FROM tempusers ORDER BY fname")
+            return render_template('index_a.html', rows=db.fetchall())
+
     elif session.get('auth_lvl')    == 1:
         return render_template('index_m.html')
+
     elif session.get('auth_lvl')    == 2:
         return render_template('index_i.html')
+
     else:
         return render_template('index.html')
 

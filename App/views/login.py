@@ -56,8 +56,8 @@ def register():
     if request.method == 'POST':
 
         # check if form fields are empty and if entered passwords match
-        if not request.form.get("username") or not request.form.get("password"):
-            return render_template('failure.html', msg='Username/Password fields cannot be empty')
+        if not request.form.get("username") or not request.form.get("password") or not request.form.get("email"):
+            return render_template('failure.html', msg='Username/ Password/ Email fields cannot be empty')
         if request.form.get("password") != request.form.get("confirmation"):
             return render_template('failure.html', msg='Password fields do not match')
 
@@ -77,8 +77,10 @@ def register():
 
         # add mentor and interviewer ids to temp table for approval
         if int(request.form.get("auth")) in {0, 1, 2}:
-            db.execute("INSERT IGNORE INTO tempusers (uname, pass, authlvl) VALUES ('{0}', '{1}', '{2}')".format(
-                request.form.get("username"), password, request.form.get("auth")))
+            db.execute(
+                "INSERT IGNORE INTO tempusers (uname, pass, fname, lname, email, authlvl) VALUES ('{0}', '{1}', '{2}', '{3}', '{4}', '{5}')".format(
+                    request.form.get("username"), password, request.form.get("fname"), request.form.get("lname"),
+                    request.form.get("email"), request.form.get("auth")))
             mysql.connection.commit()
 
         # add candidate ids to main table
