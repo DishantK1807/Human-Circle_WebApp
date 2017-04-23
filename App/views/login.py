@@ -85,13 +85,21 @@ def register():
 
         # add candidate ids to main table
         else:
-            db.execute("INSERT IGNORE INTO users (uname, pass, authlvl) VALUES ('{0}', '{1}', '{2}')".format(
-                request.form.get("username"), password, request.form.get("auth")))
+            db.execute(
+                "INSERT IGNORE INTO users (uname, pass, fname, lname, email, authlvl) VALUES ('{0}', '{1}', '{2}', '{3}', '{4}', '{5}')".format(
+                    request.form.get("username"), password, request.form.get("fname"), request.form.get("lname"),
+                    request.form.get("email"), request.form.get("auth")))
             mysql.connection.commit()
 
             # get id and authlvl
             db.execute("SELECT * FROM users WHERE uname = '{}'".format(request.form.get("username")))
             rv = db.fetchone()
+
+            db.execute(
+                "INSERT IGNORE INTO candidates (uid, fname, lname, email) VALUES ('{0}', '{1}', '{2}', '{3}')".format(
+                    rv['id'], request.form.get("fname"), request.form.get("lname"), request.form.get("email")
+                ))
+            mysql.connection.commit()
 
             # create session
             session['user_id']  = rv['id']

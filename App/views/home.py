@@ -24,13 +24,34 @@ def index():
             db.execute("SELECT * FROM tempusers ORDER BY fname")
             return render_template('index_a.html', rows=db.fetchall())
 
+
     elif session.get('auth_lvl')    == 1:
         return render_template('index_m.html')
 
+
     elif session.get('auth_lvl')    == 2:
-        return render_template('index_i.html')
+        if request.method == 'POST':
+            return None
+        else:
+            db = mysql.connection.cursor()
+            if app.config['stage'] < 2:
+                return render_template('failure.html', msg="This phase hasn't started yet")
+
+            elif app.config['stage'] == 2:
+                db.execute("SELECT * FROM candidates ORDER BY fname")
+                return render_template('index_i.html', rows=db.fetchall())
+
+            elif app.config['stage'] == 3:
+                db.execute("SELECT * FROM selected ORDER BY fname")
+                return render_template('index_i.html', rows=db.fetchall())
+
+            else:
+                return render_template('failure.html', msg="This phase has ended")
+
 
     else:
-        return render_template('index.html')
+        db = mysql.connection.cursor()
+        db.execute("SELECT * FROM candidates WHERE uid = {}".format(session['user_id']))
+        return render_template('index.html', user=db.fetchone())
 
 

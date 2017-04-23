@@ -1,15 +1,3 @@
-# import hashlib
-# from codecs import encode
-# from tempfile import gettempdir
-#
-# from flask import Flask, request, render_template
-# from flask_mysqldb import MySQL
-# from flask_session import Session
-#
-# from App.helpers import *
-# from App import app
-# from App import mysql
-
 from App.views.home import *
 
 def add(username, approval):
@@ -35,3 +23,14 @@ def add(username, approval):
     return redirect(url_for("index"))
 
 
+@app.route('/phase', methods=['GET', 'POST'])
+def startphase():
+    if request.method == 'POST':
+        if request.form.get('phase') in range(7):
+            app.config['stage'] = int(request.form.get('phase'))
+            return redirect(url_for('index'))
+        else:
+            return render_template('failure.html', msg="No such phase exist")
+
+    else:
+        return render_template('phase.html')

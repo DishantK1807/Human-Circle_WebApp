@@ -19,10 +19,14 @@ app.config['SESSION_PERMANENT'] = False
 app.config['SESSION_TYPE']      = 'filesystem'
 Session(app)
 
+app.config['stage'] = 0
+
 from App.helpers import *
 from App.views import home
 from App.views import login
-# from App.views import admin
+from App.views import admin
+from App.views import candidate
+from App.views import interviewer
 
 if __name__ == '__main__':
     app.run(debug=True)
