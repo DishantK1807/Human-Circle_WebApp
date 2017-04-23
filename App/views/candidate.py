@@ -5,15 +5,18 @@ from App.views.home import *
 def profile():
     db = mysql.connection.cursor()
     if request.method == 'POST':
-        db.execute(
-            "UPDATE candidates SET fname = '{0}', lname = '{1}', email = '{2}', cv = '{3}', pp = '{4}', ans = '{5}', sel = '{6}'".format(
+        rows = db.execute(
+            "UPDATE candidates SET fname = '{0}', lname = '{1}', email = '{2}', cv = '{3}', pp = '{4}', ans = '{5}', sel = '{6}' WHERE uid = '{7}'".format(
                 request.form.get('fname'), request.form.get('lname'), request.form.get('email'), request.form.get('cv'),
-                request.form.get('pp'), request.form.get('ans'), request.form.get('sel')))
+                request.form.get('pp'), request.form.get('ans'), request.form.get('sel'), session['user_id']))
         mysql.connection.commit()
 
-        db.execute("UPDATE users SET fname='{0}', lname='{1}', email='{2}' WHERE id = {2}}".format(
-                request.form.get('fname'), request.form.get('lname'), request.form.get('email'). session['user_id']))
+        db.execute("UPDATE users SET fname='{0}', lname='{1}', email='{2}' WHERE id = {3}}".format(
+                request.form.get('fname'), request.form.get('lname'), request.form.get('email'), session['user_id']))
         mysql.connection.commit()
+
+        if rows == 0:
+            return render_template('reject.html')
 
     else:
         db.execute("SELECT fname, lname, email FROM users WHERE id = '{}'".format(session['user_id']))
@@ -45,11 +48,16 @@ def book():
 
 @app.route('/final', methods=['GET'])
 def congrats():
-    if app.config['stage'] < 4:
-        return render_template('failure.html', msg="This phase hasn't started yet")
+    db = mysql.connection.cursor()
+    rows = db.execute("SELECT * FROM selected WHERE uid = '{0}'".format(session['user_id']))
+    if rows:
+        if app.config['stage'] < 4:
+            return render_template('failure.html', msg="This phase hasn't started yet")
 
-    elif app.config['stage'] == 4:
-        return render_template('congrats.html')
+        elif app.config['stage'] == 4:
+            return render_template('congrats.html')
 
+        else:
+            return render_template('failure.html', msg="This phase has ended")
     else:
-        return render_template('failure.html', msg="This phase has ended")
+        return render_template('reject.html')

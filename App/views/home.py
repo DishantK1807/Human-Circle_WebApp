@@ -11,6 +11,7 @@ from App import app
 from App import mysql
 
 from App.views import admin
+from App.views import interviewer
 
 
 @app.route('/', methods=['GET', 'POST'])
@@ -31,7 +32,13 @@ def index():
 
     elif session.get('auth_lvl')    == 2:
         if request.method == 'POST':
-            return None
+            if app.config['stage'] == 2:
+                return interviewer.shortlist(request.form.get('uid'), request.form.get("approval"))
+            elif app.config['stage'] == 3:
+                return interviewer.select(request.form.get('uid'), request.form.get("approval"))
+            else:
+                return None
+
         else:
             db = mysql.connection.cursor()
             if app.config['stage'] < 2:
