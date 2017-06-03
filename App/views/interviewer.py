@@ -12,6 +12,7 @@ def shortlist(uid, approval):
             "INSERT IGNORE INTO selected (uid, fname, lname, email, cv, pp) VALUES ('{0}', '{1}', '{2}', '{3}', '{4}', '{5}')".format(
              rv['uid'], rv['fname'], rv['lname'], rv['email'], rv['cv'], rv['pp'] ))
         mysql.connection.commit()
+
         return redirect(url_for('index'))
     else:
         db.execute("DELETE FROM candidates WHERE uid = '{}'".format(uid))

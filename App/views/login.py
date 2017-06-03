@@ -12,6 +12,7 @@
 
 from App.views.home import *
 
+
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     """Log User In"""

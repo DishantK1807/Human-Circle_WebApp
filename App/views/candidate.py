@@ -32,7 +32,7 @@ def book():
         return render_template('failure.html', msg="This phase hasn't started yet")
 
     elif app.config['stage'] == 3:
-        rows = db.execute("SELECT * FROM candidates WHERE uid = '{0}'".format(session['user_id']))
+        rows = db.execute("SELECT * FROM selected WHERE uid = '{0}'".format(session['user_id']))
         if rows:
             if request.method == 'POST':
                 return None
@@ -49,7 +49,7 @@ def book():
 @app.route('/final', methods=['GET'])
 def congrats():
     db = mysql.connection.cursor()
-    rows = db.execute("SELECT * FROM selected WHERE uid = '{0}'".format(session['user_id']))
+    rows = db.execute("SELECT * FROM final WHERE uid = '{0}'".format(session['user_id']))
     if rows:
         if app.config['stage'] < 4:
             return render_template('failure.html', msg="This phase hasn't started yet")

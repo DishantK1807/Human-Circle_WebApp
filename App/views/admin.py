@@ -1,5 +1,6 @@
 from App.views.home import *
 
+
 def add(username, approval):
     # create connection
     db = mysql.connection.cursor()
@@ -34,3 +35,31 @@ def startphase():
 
     else:
         return render_template('phase.html')
+
+
+@app.route('/mail', methods=['GET', 'POST'])
+def sendmail():
+    if request.method == 'POST':
+        db = mysql.connection.cursor()
+
+        if app.config['stage'] >= 4:
+            db.execute("SELECT fname, email FROM final")
+            users = db.fetchall()
+        elif app.config['stage'] >= 2:
+            db.execute("SELECT fname, email FROM selected")
+            users = db.fetchall()
+        else:
+            db.execute("SELECT fname, email FROM candidates")
+            users = db.fetchall()
+
+        subject = request.form.get('subject')
+        message = request.form.get('message')
+        with mail.connect() as conn:
+            for user in users:
+                msg = Message(recipients = user['email'],
+                              body=message,
+                              subject = subject)
+                conn.send(msg)
+
+    else:
+        return render_template('mail.html')

@@ -3,6 +3,7 @@ from tempfile import gettempdir
 from flask import Flask
 from flask_mysqldb import MySQL
 from flask_session import Session
+from flask_mail import Mail
 
 app = Flask(__name__)
 
@@ -12,6 +13,13 @@ app.config['MYSQL_PASSWORD']    = '456123'
 app.config['MYSQL_DB']          = 'yic'
 app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
 mysql = MySQL(app)
+
+MAIL_SERVER = '127.0.0.1'
+MAIL_PORT = 25
+MAIL_USERNAME = None
+MAIL_PASSWORD = None
+DEFAULT_MAIL_SENDER = 'Young India Challenge'
+mail = Mail(app)
 
 # configure session to use filesystem (instead of signed cookies)
 app.config['SESSION_FILE_DIR']  = gettempdir()
