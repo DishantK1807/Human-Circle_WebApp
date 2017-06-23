@@ -1,3 +1,4 @@
 .idea
+App.egg-info
 App/__pycache__/
 App/views/__pycache__/
