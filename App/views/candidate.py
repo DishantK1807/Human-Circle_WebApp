@@ -16,12 +16,12 @@ def profile():
         mysql.connection.commit()
 
         if rows == 0:
-            return render_template('reject.html')
+            return render_template('candidate/reject.html')
 
     else:
         db.execute("SELECT fname, lname, email FROM users WHERE id = '{}'".format(session['user_id']))
         rv = db.fetchone()
-        return render_template('profile.html', fname=rv['fname'], lname=rv['lname'], email=rv['email'])
+        return render_template('candidate/profile.html', fname=rv['fname'], lname=rv['lname'], email=rv['email'])
 
 
 @app.route('/book', methods=['GET', 'POST'])
@@ -38,9 +38,9 @@ def book():
                 return None
                 #  TODO
             else:
-                return render_template('book.html')
+                return render_template('candidate/book.html')
         else:
-            return render_template('reject.html')
+            return render_template('candidate/reject.html')
 
     else:
         return render_template('failure.html', msg="This phase has ended")
@@ -55,9 +55,9 @@ def congrats():
             return render_template('failure.html', msg="This phase hasn't started yet")
 
         elif app.config['stage'] == 4:
-            return render_template('congrats.html')
+            return render_template('candidate/congrats.html')
 
         else:
             return render_template('failure.html', msg="This phase has ended")
     else:
-        return render_template('reject.html')
+        return render_template('candidate/reject.html')

@@ -34,7 +34,7 @@ def startphase():
             return render_template('failure.html', msg="No such phase exist")
 
     else:
-        return render_template('phase.html')
+        return render_template('admin/phase.html')
 
 
 @app.route('/mail', methods=['GET', 'POST'])
@@ -62,4 +62,4 @@ def sendmail():
                 conn.send(msg)
 
     else:
-        return render_template('mail.html')
+        return render_template('admin/mail.html')

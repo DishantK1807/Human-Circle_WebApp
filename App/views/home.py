@@ -25,11 +25,11 @@ def index():
         else:
             db = mysql.connection.cursor()
             db.execute("SELECT * FROM tempusers ORDER BY fname")
-            return render_template('index_a.html', rows=db.fetchall())
+            return render_template('admin/index.html', rows=db.fetchall())
 
 
     elif session.get('auth_lvl')    == 1:
-        return render_template('index_m.html')
+        return render_template('mentor/index.html')
 
 
     elif session.get('auth_lvl')    == 2:
@@ -48,11 +48,11 @@ def index():
 
             elif app.config['stage'] == 2:
                 db.execute("SELECT * FROM candidates ORDER BY fname")
-                return render_template('index_i.html', rows=db.fetchall())
+                return render_template('interviewer/index.html', rows=db.fetchall())
 
             elif app.config['stage'] == 3:
                 db.execute("SELECT * FROM selected ORDER BY fname")
-                return render_template('index_i.html', rows=db.fetchall())
+                return render_template('interviewer/index.html', rows=db.fetchall())
 
             else:
                 return render_template('failure.html', msg="This phase has ended")
@@ -61,6 +61,6 @@ def index():
     else:
         db = mysql.connection.cursor()
         db.execute("SELECT * FROM candidates WHERE uid = {}".format(session['user_id']))
-        return render_template('index.html', user=db.fetchone())
+        return render_template('candidate/index.html', user=db.fetchone())
 
 
