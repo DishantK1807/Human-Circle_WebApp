@@ -8,9 +8,9 @@
 <link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
 <link rel="stylesheet" href="{{ url_for('static', filename='css/Google-Style-Login.css') }}">
 <div class="login-card">
-        <form class="form-signin">
-            <input class="form-control" type="email" required="" placeholder="Email address" autofocus="" id="inputEmail">
-            <input class="form-control" type="password" required="" placeholder="Password" id="inputPassword">
+        <form class="form-signin" action="{{ url_for('login') }}" method="post">
+            <input class="form-control" name="username" type="text" required="" placeholder="Email address" autofocus="" id="inputEmail">
+            <input class="form-control" name="password" type="password" required="" placeholder="Password" id="inputPassword">
             <div class="checkbox">
                 <div class="checkbox">
                     <label>
