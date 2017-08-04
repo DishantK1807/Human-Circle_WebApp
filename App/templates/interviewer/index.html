@@ -1,0 +1,78 @@
+{% extends "interviewer/layout.html" %}
+
+{% block title %}
+    Interviewer
+{% endblock %}
+
+{% block main %}
+    <div class="page-header">
+        <h1> </h1></div>
+    <div class="table-responsive">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th class="active">NAME </th>
+                    <th class="active">EMAIL </th>
+                    <th class="active">LINK TO USER PROFILE</th>
+                    <th class="active">LINK TO CV</th>
+					<th class="active">COMMENTS</th>
+                    <th class="active">ACCEPT/REJECT </th>
+                </tr>
+            </thead>
+            <tbody>
+			{% for row in rows %}
+                <tr>
+				<td>{{ row["Name"] }}</td>
+                <td>{{ row["email"] }}</td>
+		        <td>{{ row["linktoprofile"] }}</td>
+				<td>{{ row["comments"] }}</td>
+                <td>{{ row["linktocv"] }}</td>
+				
+                    
+                    <td>
+                        <a name="approval" value="accept" href="#" onclick="form.submit();"><img src="{{ url_for('static', filename='img/add.png') }}"></a>
+					    <a name="approval" value="reject" href="#" onclick="form.submit();"><img src="{{ url_for('static', filename='img/exit.png') }}"</a>
+                    </td>
+                </tr>
+		    {% endfor %}
+                <tr></tr>
+            </tbody>
+	     </table>
+    <div align="center">
+        <nav>
+    <ul class="pagination">
+        <li><a aria-label="Previous"><span aria-hidden="true"><<</span></a></li>
+        <li><a>1</a></li>
+        <li><a>2</a></li>
+        <li><a>3</a></li>
+        <li><a>4</a></li>
+        <li><a>5</a></li>
+        <li><a aria-label="Next"><span aria-hidden="true">>></span></a></li>
+    </ul>
+</nav>
+    </div>    
+		
+	</div>
+{% endblock %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

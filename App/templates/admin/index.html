@@ -5,37 +5,118 @@
 {% endblock %}
 
 {% block main %}
+<link rel="stylesheet" href={{ url_for('static', filename='css/admin.css') }}>
+	
     <div>
-        <table class="table table-striped">
-            <thead>
-                <tr>
-                    <th>First Name</th>
-                    <th>Last Name</th>
-                    <th>Username</th>
-                    <th>Email Address</th>
-                    <th>Authorisation</th>
-                    <th>Accept / Reject</th>
-                </tr>
-            </thead>
-            <tbody align="left">
-                 {% for row in rows %}
-                <tr>
-                    <td>{{ row["fname"] }}</td>
-                    <td>{{ row["lname"] }}</td>
-                    <td>{{ row["uname"] }}</td>
-                    <td>{{ row["email"] }}</td>
-                    <td>{{ row["authlvl"] }}</td>
-                    <td>
-                        <form action="{{ url_for('index') }}" method="post">
-                            <input name="username" type="hidden" value="{{ row["uname"] }}">
-                            <button type="submit" class="btn btn-info btn-circle" name="approval" value="accept"><i class="glyphicon glyphicon-ok"></i></button>
-                            &nbsp;&nbsp;&nbsp;&nbsp;
-                            <button type="submit" class="btn btn-danger btn-circle" name="approval" value="reject"><i class="glyphicon glyphicon-remove"></i></button>
-                        </form>
-                    </td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+        <ul class="nav nav-tabs">
+            <li class="active"><a href="#tab-1" role="tab" data-toggle="tab">APPROVE USERS</a></li>
+            <li><a href="#tab-2" role="tab" data-toggle="tab">START PHASE</a></li>
+            <li><a href="#tab-3" role="tab" data-toggle="tab">MAIL </a></li>
+            <li><a href="#tab-4" role="tab" data-toggle="tab">DELETE RECORDS</a></li>
+        </ul>
+        <div class="tab-content">
+            <div class="tab-pane active" role="tabpanel" id="tab-1">
+                <p> </p>
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th class="active"> Name</th>
+                                <th class="active">Email Address</th>
+                                <th class="active">Contact Number</th>
+                                <th class="active">Authorization </th>
+                                <th class="active">Accept/Reject </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+						{% for row in rows %}
+                            <tr>
+                                <td>{{ row["Name"] }}</td>
+                                <td>{{ row["email"] }}</td>
+								<td>{{ row["contact"] }}</td>
+                                <td>{{ row["authlvl"] }}</td>
+                                
+                             
+                                <td>
+									<form action="{{ url_for('index') }}" method="post">
+										<input name="username" type="hidden" value="{{ row["Name"] }}">	
+										<a name="approval" value="accept" href="#" onclick="form.submit();"><img src="{{ url_for('static', filename='img/add.png') }}"></a>
+										<a name="approval" value="reject" href="#" onclick="form.submit();"><img src="{{ url_for('static', filename='img/exit.png') }}"</a>
+									</form>
+								</td>
+                            </tr>
+							{% endfor %}
+                            <tr></tr>
+                        </tbody>
+                    </table>
+                </div>
+				<div align="center">
+                    <nav>
+                        <ul class="pagination">
+                            <li><a aria-label="Previous"><span aria-hidden="true">«</span></a></li>
+                            <li><a>1</a></li>
+                            <li><a>2</a></li>
+                            <li><a>3</a></li>
+                            <li><a>4</a></li>
+                            <li><a>5</a></li>
+                            <li><a aria-label="Next"><span aria-hidden="true">»</span></a></li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+            <div class="tab-pane" role="tabpanel" id="tab-2">
+                <h2 class="text-uppercase text-center bg-primary"><strong>START PHASE</strong></h2>
+                <div class="center-align horicenter">
+                    <div>
+                        <button class="btn btn-success btn-lg" type="button">PHASE 1</button>
+						&nbsp;&nbsp;
+                        <button class="btn btn-success btn-lg" type="button">PHASE 2</button>
+                    </div>
+					&nbsp;&nbsp;&nbsp;&nbsp;
+                    <div>
+                        <button class="btn btn-info btn-lg" type="button">PHASE 3</button>
+						&nbsp;&nbsp;
+                        <button class="btn btn-info btn-lg" type="button">PHASE 4</button>
+                    </div>
+					&nbsp;&nbsp;&nbsp;&nbsp;
+                    <div>
+                        <button class="btn btn-warning btn-lg" type="button">PHASE 5</button>
+						&nbsp;&nbsp;
+                        <button class="btn btn-warning btn-lg" type="button">PHASE 6</button>
+                    </div>
+					&nbsp;&nbsp;&nbsp;&nbsp;
+                    <div>
+                        <button class="btn btn-danger btn-lg" type="button">PHASE 7</button>
+						&nbsp;&nbsp;
+                        <button class="btn btn-danger btn-lg" type="button">PHASE 8</button>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-pane" role="tabpanel" id="tab-3">
+                <div class="horicenter">
+                    <form class="bootstrap-form-with-validation">
+                        <h2 class="text-center text-primary"><strong>MAIL</strong> </h2></br>
+                        <div class="form-group">
+                            <label class="control-label" for="text-input">Subject: </label></br>
+                            <input class="form-control input-lg" type="text" name="text-input" id="text-input">
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label" for="textarea-input">Message: </label></br>
+                            <textarea rows="3" cols="22" class="form-control input-lg" name="textarea-input" id="textarea-input"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <button class="btn btn-info btn-lg" type="submit">Mail All</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="tab-pane" role="tabpanel" id="tab-4">
+                <div class="center-align">
+                    <form method="post">
+                        <button class="btn btn-danger btn-lg" type="submit"><strong>Delete All Records</strong></button>
+                    </form>
+                </div>
+            </div>
+        </div>
     </div>
-{% endblock %}
+	{% endblock %}
