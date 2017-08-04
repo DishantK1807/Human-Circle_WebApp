@@ -1,60 +1,88 @@
 <!DOCTYPE html>
-
-<html lang="en">
+<html>
 
 <head>
-    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
-
-    <!-- https://developer.mozilla.org/en-US/docs/Web/HTML/Element/meta -->
-    <meta charset="utf-8"/>
-    <meta content="initial-scale=1, width=device-width" name="viewport"/>
-
-    <!-- documentation at http://getbootstrap.com/, alternative themes at https://www.bootstrapcdn.com/bootswatch/ -->
-    <link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet"/>
-
-    <link href="{{ url_for('static', filename='css/styles.css') }}" rel="stylesheet"/>
-
-    <script src="{{ url_for('static', filename='js/jquery-3.2.0.min.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
-
-    <title>{% block title %}{% endblock %}</title>
-
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Candidate_layout</title>
+     <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Cookie">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/fonts/font-awesome.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/Layout_Header.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/Layout_Footer.css') }}">
+	
+	 <title>{% block title %}{% endblock %}</title>
 </head>
 
 <body>
-
-<div class="container">
-
-    <nav class="navbar navbar-default">
+    <nav class="navbar navbar-default navbar-fixed-top show custom-header">
         <div class="container-fluid">
-            <div class="navbar-header">
-                <button aria-expanded="false" class="navbar-toggle collapsed" data-target="#navbar"
-                        data-toggle="collapse" type="button">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a class="navbar-brand" href="{{ url_for('index') }}"><span class="blue">YOUNG </span><span class="red">INDIA </span><span
-                        class="yellow">CHALLENGE</span></a>
+            <div class="navbar-header"><a class="navbar-brand navbar-link" href="#">HUMAN CIRCLE<span>logo </span></a>
+                <button class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse"><span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar-collapse">
+                <ul class="nav navbar-nav links">
+                    <li role="presentation"><a href="humancircle.in">HOME </a></li>
+                    <li role="presentation"><a href="#">ABOUT US</a></li>
+                    <li role="presentation"><a class="text-uppercase" href="youngindiachallenge.com">Eligibility </a></li>
+                    <li role="presentation"><a class="text-uppercase" href="#">Apply NOw</a></li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <li class="dropdown open">
+                        <a class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true" href="#"> <span class="caret"></span><img class="img-circle dropdown-image" src="{{ url_for('TODO') }}"></a>
+                        <ul class="dropdown-menu dropdown-menu-right" role="menu">
+                            <li role="presentation"><a href="{{ url_for('index') }}">Profile </a></li>
+                            <li role="presentation"><a href="#">Settings </a></li>
+                            <li role="presentation" class="active"><a href="humancircle.in">Logout </a></li>
+                        </ul>
+                    </li>
+                </ul>
             </div>
         </div>
     </nav>
-
-    {% if get_flashed_messages() %}
-        <header>
-            <div class="alert alert-info" role="alert">
-                {{ get_flashed_messages() | join(" ") }}
-            </div>
-        </header>
-    {% endif %}
 
     <main>
         {% block main %}{% endblock %}
     </main>
 
-</div>
+    <div class="wrapper">
+        <div class="push"></div>
+    </div>
+    <div class="footer">
+        <footer>
+            <div class="row">
+                <div class="col-md-3 col-sm-6 footer-navigation">
+                    <h3><a href="#">HUMAN CIRCLE<span>logo </span></a></h3>
+                    <p class="links"><a href="humancircle.in">Home</a><strong> · </strong><a href="#">Blog</a><strong> · </strong><a href="#">About</a><strong> · </strong><a href="#">Faq</a><strong> · </strong><a href="#">Contact</a></p>
+                    <p class="company-name">HUMANCIRCLE© 2015 </p>
+                </div>
+                <div class="col-md-4 col-sm-6 footer-contacts">
+                    <div><span class="fa fa-map-marker footer-contacts-icon"> </span>
+                        <p>ADDRESS </p>
+                    </div>
+                    <div><i class="fa fa-phone footer-contacts-icon"></i>
+                        <p class="footer-center-info email text-left"> +1 555 123456</p>
+                    </div>
+                    <div>
+                        <a href="mailto:info@humancircle.in"> <i class="fa fa-envelope footer-contacts-icon"></i></a>
+                        <p> <a href="#" target="_blank">info@humancircle.in</a></p>
+                    </div>
+                </div>
+                <div class="clearfix visible-sm-block"></div>
+                <div class="col-md-4 footer-about">
+                    <h4>About the company</h4>
+                    <p>Spread the #DoWhatYouLove movement through experiential events and programs like Young India Challenge, Enlightened Minds Program, #DoWhatYouLove Hangouts and several others.</p>
+                    <div class="social-links social-icons"><a href="www.facebook.com/youngindiachallenge"><i class="fa fa-facebook"></i></a><a href="twitter.com/hctribe"><i class="fa fa-twitter"></i></a><a href="www.linkedin.com/company/human-circle"><i class="fa fa-linkedin"></i></a>
+                        <a href="www.instagram.com/hctribe"><i class="fa fa-instagram"></i></a><a href="www.youtube.com/user/HumanCircleIndia"><i class="fa fa-youtube-square"></i></a></div>
+                </div>
+            </div>
+        </footer>
+    </div>
+		<script src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
 
 </body>
+
 
 </html>

@@ -1,42 +1,73 @@
-{% extends "candidate/layout.html" %}
+{% extends "layout.html" %}
 
 {% block title %}
     Register
 {% endblock %}
 
 {% block main %}
-    <form action="{{ url_for('register') }}" method="post">
-        <fieldset>
-            <div class="form-group">
-                <input autocomplete="off" autofocus class="form-control" name="username" placeholder="Username"
-                       type="text"/>
-            </div>
-            <div class="form-group">
-                <input class="form-control" name="password" placeholder="Password" type="password"/>
-            </div>
-            <div class="form-group">
-                <input class="form-control" name="confirmation" placeholder="Re-enter Password" type="password"/>
-            </div>
-            <div class="form-group">
-                <input class="form-control" name="fname" placeholder="First Name" type="text"/>
-            </div>
-            <div class="form-group">
-                <input class="form-control" name="lname" placeholder="Last Name" type="text"/>
-            </div>
-            <div class="form-group">
-                <input class="form-control" name="email" placeholder="Email Address" type="text"/>
-            </div>
-            <div class="form-group">
-                <select class="form-control" name="auth" autofocus>
-                    <option disabled selected value="">Register As</option>
-                    <option value="1">Mentor</option>
-                    <option value="2">Interviewer</option>
-                    <option value="3">Candidate</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <button class="btn btn-default" type="submit">Register</button>
-            </div>
-        </fieldset>
-    </form>
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Cookie">
+	<link rel="stylesheet" href="{{ url_for('static', filename='css/register.css') }}">
+	<link rel="stylesheet" href="{{ url_for('static', filename='css/Pretty-Header.css') }}">
+	<link rel="stylesheet" href="{{ url_for('static', filename='css/Pretty-Footer.css') }}">
+	
+    <div class="row register-form">
+        <div class="col-md-8 col-md-offset-2 show">
+            <div class="form-group"></div>
+            <div>
+			<br><br><br><br><br>
+			<br><br><br><br><br>
+			<br><br><br><br><br></div>
+            <form class="form-horizontal show custom-form" action="{{ url_for('register') }}" method="post">
+                <div class="form-group"></div>
+                <div class="form-group">
+                    <div class="col-md-5">
+                        <input class="form-control col xs12" type="text" name="fname" required="" placeholder="First Name">
+                    </div>
+                    <div class="col-md-5">
+                        <input class="form-control col xs12" type="text" name="lname" required="" placeholder="Last Name">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-10 col-sm-6 input-column">
+                        <input class="form-control" type="email" name="email" required="" placeholder="Email Address" inputmode="email">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-10 col-sm-6 input-column">
+                        <input class="form-control" type="email" name="mob" required="" placeholder="Mobile Number">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-10 col-sm-6 input-column">
+                        <input class="form-control" type="password" name="password" required="" placeholder="Password">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-10 col-sm-6 input-column">
+                        <input class="form-control" type="password" name="confirmation" required="" placeholder="Retype Password">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-4 col-sm-4 label-column">
+                        <label class="control-label show" for="repeat-pawssword-input-field">Register As:</label>
+                    </div>
+                    <div class="col-md-5 col-md-offset-0 col-sm-6 input-column">
+                        <div class="dropdown">
+                            <button class="btn btn-primary active btn-block dropdown-toggle" data-toggle="dropdown" aria-expanded="false" type="button">Select <span class="caret"></span></button>
+                            <ul class="dropdown-menu dropdown-menu-right" role="menu">
+                                <li role="presentation"><a href="#">Mentor </a></li>
+                                <li role="presentation"><a href="#">Interviewer </a></li>
+                                <li role="presentation"><a href="#">Candidate </a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-10 col-md-offset-0">
+                    <button class="btn btn-primary btn-lg btn-signin" type="submit">Register </button>
+                </div><span> </span>
+                <div class="form-group"><span> </span></div>
+                <div class="col-md-10"><span>Already Registered?&nbsp; </span><a href="{{ url_for('login') }}">LOGIN</a></div>
+            </form>
+        </div>
+    </div>
 {% endblock %}

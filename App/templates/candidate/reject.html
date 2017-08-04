@@ -1,0 +1,17 @@
+{% extends "candidate/layout.html" %}
+
+{% block title %}
+    Rejection 
+{% endblock %}
+
+{% block main %}
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Candidate_reject</title>	
+     <link rel="stylesheet" href="{{ url_for('static', filename='css/reject.css') }}">
+<br><br><br>
+ <span> </span><span> </span><span> </span><span> </span><span> </span>
+    <h1 class="text-center"><strong>SORRY!</strong> </h1><span> </span><span> </span>
+	<br><br><br>
+    <p class="lead text-center">Thank you for applying this year for Young India Challenge.Unfortunately, your application was not accepted this year. Every year we receive more applications than we are able to accept. We hope to see you again next year! </p>
+    {% endblock %}

@@ -5,5 +5,19 @@
 {% endblock %}
 
 {% block main %}
-    <span></span>
-{% endblock %}
+     <link rel="stylesheet" href="{{ url_for('static', filename='css/untitled.css') }}">	 
+     <link rel="stylesheet" href="{{ url_for('static', filename='css/congrats.css') }}">
+	
+	<span> </span><span> </span><span> </span>
+    <h1 class="text-center"><strong>CONGRATULATIONS!</strong> </h1><span> </span>
+    <div class="form-group"></div><span> </span>
+    <div></div>
+	<br><br><br>
+    <p class="lead text-center">After reviewing your application for Young India Challenge, we think you're a good fit. We are happy to let you know that you have been shortlisted for YIC 2018. Now its time for you to get a bit closer towards the #DoWhatYouLove movement. </p><span> </span>
+    <div></div>
+    <background img src="{{ url_for('static', filename='img/congrats1.jpg') }}" >
+
+    <div class="form-group"></div>
+	<br><br><br>
+    <button class="btn btn-primary" type="button"><strong>Proceed To Next Stage</strong></button>
+     {% endblock %}
