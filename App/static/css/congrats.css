@@ -1,0 +1,14 @@
+.carousel-inner > .item > a > img, .carousel-inner > .item > img, .img-responsive, .thumbnail a > img, .thumbnail > img{
+  background-size:cover;
+  display:block;
+  max-width:100%;
+  height:auto;
+}
+
+img{
+  background-image:url("../../assets/img/congrats1.jpg");
+  background-size:cover;
+  vertical-align:middle;
+  flex-wrap:wrap;
+}
+
