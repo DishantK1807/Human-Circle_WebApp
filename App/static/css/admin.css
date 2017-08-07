@@ -1,0 +1,19 @@
+.center-align{
+  margin-left:auto;
+  margin-right:auto;
+  text-align:center;
+  vertical-align:middle;
+  margin-top:15%;
+}
+
+.form-control{
+  display:inline-block;
+  width:auto;
+}
+
+.horicenter{
+  margin-left:auto;
+  margin-right:auto;
+  text-align:center;
+}
+
