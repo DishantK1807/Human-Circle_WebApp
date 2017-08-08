@@ -6,7 +6,7 @@
 }
 
 img{
-  background-image:url("../../assets/img/congrats1.jpg");
+  background-image:url("../../img/congrats1.jpg");
   background-size:cover;
   vertical-align:middle;
   flex-wrap:wrap;
