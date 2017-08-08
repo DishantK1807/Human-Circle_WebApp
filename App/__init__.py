@@ -12,7 +12,6 @@ app.config['MYSQL_USER']        = 'root'
 app.config['MYSQL_PASSWORD']    = '456123'
 app.config['MYSQL_DB']          = 'yic'
 app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
-app.config['MYSQL_PORT']			= 3307
 mysql = MySQL(app)
 
 MAIL_SERVER = '127.0.0.1'

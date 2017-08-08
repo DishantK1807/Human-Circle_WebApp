@@ -9,8 +9,8 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Cookie">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/fonts/font-awesome.min.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/Layout_Header.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/Layout_Footer.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/Pretty-Header.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/Pretty-Footer.css') }}">
 	
 	 <title>{% block title %}{% endblock %}</title>
 </head>
@@ -30,7 +30,7 @@
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
                     <li class="dropdown open">
-                        <a class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true" href="#"> <span class="caret"></span><img class="img-circle dropdown-image" src="{{ url_for('TODO') }}"></a>
+                        <a class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true" href="#"> <span class="caret"></span><img class="img-circle dropdown-image" src=""></a>
                         <ul class="dropdown-menu dropdown-menu-right" role="menu">
                             <li role="presentation"><a href="{{ url_for('index') }}">Profile </a></li>
                             <li role="presentation"><a href="#">Settings </a></li>
@@ -79,7 +79,7 @@
             </div>
         </footer>
     </div>
-		<script src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
+		<script src="{{ url_for('static', filename='js/jquery-3.2.0.min.js') }}"></script>
     <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
 
 </body>
