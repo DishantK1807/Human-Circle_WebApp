@@ -1,24 +1,24 @@
 from App.views.home import *
 
 
-def add(username, approval):
+def add(email, approval):
     # create connection
     db = mysql.connection.cursor()
 
     if approval == "accept":
-        db.execute("SELECT * FROM tempusers WHERE uname = '{}'".format(username))
+        db.execute("SELECT * FROM tempusers WHERE email = '{}'".format(email))
         rv = db.fetchone()
 
         db.execute(
-            "INSERT IGNORE INTO users (uname, pass, fname, lname, email, authlvl) VALUES ('{0}', '{1}', '{2}', '{3}', '{4}', '{5}')".format(
-                rv['uname'], rv['pass'], rv['fname'], rv['lname'], rv['email'], rv['authlvl']))
+            "INSERT IGNORE INTO users (email, pass, fname, lname, authlvl) VALUES ('{0}', '{1}', '{2}', '{3}', '{4}')".format(
+                rv['email'], rv['pass'], rv['fname'], rv['lname'], rv['authlvl']))
         mysql.connection.commit()
-        db.execute("DELETE FROM tempusers WHERE uname = '{}'".format(username))
+        db.execute("DELETE FROM tempusers WHERE email = '{}'".format(email))
         mysql.connection.commit()
         # return render_template("failure.html", msg="Accepted")
 
     else:
-        db.execute("DELETE FROM tempusers WHERE uname = '{}'".format(username))
+        db.execute("DELETE FROM tempusers WHERE email = '{}'".format(email))
         mysql.connection.commit()
         # return render_template("failure.html", msg=str(username) + "  " + str(approval))
     return redirect(url_for("index"))

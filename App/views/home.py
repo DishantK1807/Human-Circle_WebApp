@@ -21,7 +21,7 @@ from App.views import interviewer
 def index():
     if session.get('auth_lvl')      == 0:
         if request.method == 'POST':
-            return admin.add(request.form.get('username'), request.form.get("approval"))
+            return admin.add(request.form.get('email'), request.form.get("approval"))
         else:
             db = mysql.connection.cursor()
             db.execute("SELECT * FROM tempusers ORDER BY fname")
