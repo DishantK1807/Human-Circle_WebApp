@@ -2,6 +2,7 @@ from App.views.home import *
 
 
 def add(email, approval):
+    '''Approve Mentors and Interviewers'''
     # create connection
     db = mysql.connection.cursor()
 
@@ -26,6 +27,7 @@ def add(email, approval):
 
 @app.route('/phase', methods=['GET', 'POST'])
 def startphase():
+    '''Start Phase'''
     if request.method == 'POST':
         if request.form.get('phase') in range(7):
             app.config['stage'] = int(request.form.get('phase'))
@@ -39,6 +41,7 @@ def startphase():
 
 @app.route('/mail', methods=['GET', 'POST'])
 def sendmail():
+    '''Send Mail'''
     if request.method == 'POST':
         db = mysql.connection.cursor()
 

@@ -2,6 +2,7 @@ from App.views.home import *
 
 
 def shortlist(uid, approval):
+    '''Shortlist candidates based on profiles'''
     db = mysql.connection.cursor()
 
     if approval == "accept":
@@ -20,6 +21,7 @@ def shortlist(uid, approval):
 
 
 def select(uid, approval):
+    '''Select candidates after the interview'''
     db = mysql.connection.cursor()
     if approval == "accept":
         db.execute("SELECT * FROM selected WHERE uid = '{}'".format(uid))

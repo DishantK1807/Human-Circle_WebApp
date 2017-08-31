@@ -3,6 +3,7 @@ from App.views.home import *
 
 @app.route('/profile', methods=['GET', 'POST'])
 def profile():
+    '''View Candidate Profile'''
     db = mysql.connection.cursor()
     if request.method == 'POST':
         return redirect(url_for('edit'))
@@ -14,6 +15,7 @@ def profile():
 
 @app.route('/edit', methods=['GET', 'POST'])
 def edit():
+    '''Edit Candidate Profile'''
     db = mysql.connection.cursor()
     if request.method == 'POST':
         rows = db.execute(
@@ -37,6 +39,7 @@ def edit():
 
 @app.route('/book', methods=['GET', 'POST'])
 def book():
+    '''Schedule Dates'''
     db = mysql.connection.cursor()
 
     if app.config['stage'] < 3:
@@ -59,6 +62,7 @@ def book():
 
 @app.route('/final', methods=['GET'])
 def congrats():
+    '''Final page for selected students'''
     db = mysql.connection.cursor()
     rows = db.execute("SELECT * FROM final WHERE uid = '{0}'".format(session['user_id']))
     if rows:
