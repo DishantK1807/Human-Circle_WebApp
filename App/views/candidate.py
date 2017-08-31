@@ -5,24 +5,35 @@ from App.views.home import *
 def profile():
     db = mysql.connection.cursor()
     if request.method == 'POST':
+        return redirect(url_for('edit'))
+    else:
+        db.execute("SELECT fname, lname, email, cv, pp, ans FROM candidates WHERE uid = '{}'".format(session['user_id']))
+        rv = db.fetchone()
+        return render_template('candidate/profile.html', user=rv)
+
+
+@app.route('/edit', methods=['GET', 'POST'])
+def edit():
+    db = mysql.connection.cursor()
+    if request.method == 'POST':
         rows = db.execute(
             "UPDATE candidates SET fname = '{0}', lname = '{1}', email = '{2}', cv = '{3}', pp = '{4}', ans = '{5}', sel = '{6}' WHERE uid = '{7}'".format(
                 request.form.get('fname'), request.form.get('lname'), request.form.get('email'), request.form.get('cv'),
                 request.form.get('pp'), request.form.get('ans'), request.form.get('sel'), session['user_id']))
         mysql.connection.commit()
 
-        db.execute("UPDATE users SET fname='{0}', lname='{1}', email='{2}' WHERE id = {3}}".format(
-                request.form.get('fname'), request.form.get('lname'), request.form.get('email'), session['user_id']))
+        db.execute("UPDATE users SET fname='{0}', lname='{1}', email='{2}' WHERE id = {3}".format(
+            request.form.get('fname'), request.form.get('lname'), request.form.get('email'), session['user_id']))
         mysql.connection.commit()
 
         if rows == 0:
             return render_template('candidate/reject.html')
 
     else:
-        db.execute("SELECT fname, lname, email FROM users WHERE id = '{}'".format(session['user_id']))
+        db.execute(
+            "SELECT fname, lname, email, cv, pp, ans FROM candidates WHERE uid = '{}'".format(session['user_id']))
         rv = db.fetchone()
-        return render_template('candidate/profile.html', fname=rv['fname'], lname=rv['lname'], email=rv['email'])
-
+        return render_template('candidate/edit.html', user=rv)
 
 @app.route('/book', methods=['GET', 'POST'])
 def book():

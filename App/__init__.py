@@ -27,7 +27,7 @@ app.config['SESSION_PERMANENT'] = False
 app.config['SESSION_TYPE']      = 'filesystem'
 Session(app)
 
-app.config['stage'] = 2
+app.config['stage'] = 1
 
 from App.helpers import *
 from App.views import home
