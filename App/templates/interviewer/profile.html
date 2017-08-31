@@ -1,0 +1,41 @@
+{% extends "interviewer/layout.html" %}
+
+{% block title %}
+    Profile
+{% endblock %}
+
+{% block main %}
+    {% if user['pp'] == None %}
+        <img src="{{ url_for('static', filename='img/pp/Default.jpg') }}">
+    {% else %}
+        <img src="{{ url_for('static', filename='img/pp/'+user['pp']) }}">
+    {% endif %}
+    <br><br>
+    <label>{{ user['fname'] }} {{ user['lname'] }}</label><br><br>
+    <label><a href="{{ user['cv'] }}">Link To CV</a></label><br><br>
+    <form action="{{ url_for('profile') }}" method="post">
+    <button class="btn btn-success" type="submit">Edit Profile</button>
+    </form>
+{% endblock %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

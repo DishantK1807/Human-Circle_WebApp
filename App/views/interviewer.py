@@ -1,6 +1,41 @@
 from App.views.home import *
 
 
+@app.route('/iprofile', methods=['GET', 'POST'])
+def iprofile():
+    '''View Interviewer Profile'''
+    db = mysql.connection.cursor()
+    if request.method == 'POST':
+        return redirect(url_for('iedit'))
+    else:
+        db.execute(
+            "SELECT fname, lname, email, pp FROM interviewers WHERE uid = '{}'".format(session['user_id']))
+        rv = db.fetchone()
+        return render_template('interviewer/profile.html', user=rv)
+
+
+@app.route('/iedit', methods=['GET', 'POST'])
+def iedit():
+    '''Edit Candidate Profile'''
+    db = mysql.connection.cursor()
+    if request.method == 'POST':
+        rows = db.execute(
+            "UPDATE interviewers SET fname = '{0}', lname = '{1}', email = '{2}', pp = '{3}' WHERE uid = '{4}'".format(
+                request.form.get('fname'), request.form.get('lname'), request.form.get('email'),
+                request.form.get('pp'), session['user_id']))
+        mysql.connection.commit()
+
+        db.execute("UPDATE users SET fname='{0}', lname='{1}', email='{2}' WHERE id = {3}".format(
+            request.form.get('fname'), request.form.get('lname'), request.form.get('email'), session['user_id']))
+        mysql.connection.commit()
+
+    else:
+        db.execute(
+            "SELECT fname, lname, email, pp FROM interviewers WHERE uid = '{}'".format(session['user_id']))
+        rv = db.fetchone()
+        return render_template('interviewer/edit.html', user=rv)
+
+
 def shortlist(uid, approval):
     '''Shortlist candidates based on profiles'''
     db = mysql.connection.cursor()
