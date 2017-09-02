@@ -25,6 +25,7 @@ mail = Mail(app)
 app.config['SESSION_FILE_DIR']  = gettempdir()
 app.config['SESSION_PERMANENT'] = False
 app.config['SESSION_TYPE']      = 'filesystem'
+app.config['SECRET_KEY']        = '2A3A5EBF2DA8F19594E676BD538E9CFDE5175B2797F0AFA493F8B0E8AB82E042'
 Session(app)
 
 app.config['stage'] = 1
