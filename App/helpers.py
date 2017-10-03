@@ -1,4 +1,8 @@
+from App import app
+
 from functools import wraps
+import datetime
+import jwt
 
 from flask import redirect, session, url_for, render_template
 
@@ -26,7 +30,6 @@ def login_required(f):
 
     http://flask.pocoo.org/docs/0.11/patterns/viewdecorators/
     """
-
     @wraps(f)
     def decorated_function(*args, **kwargs):
         if session.get("user_id") is None:
@@ -34,3 +37,36 @@ def login_required(f):
         return f(*args, **kwargs)
 
     return decorated_function
+
+
+def encode_auth(user_id):
+    """
+        Generates the Auth Token
+        :return: string
+    """
+    try:
+        payload = {
+            # Time of Generation of the Token
+            'iat': datetime.datetime.utcnow(),
+            # Subject
+            'sub': user_id
+        }
+        return jwt.encode(
+            payload,
+            app.config.get('SECRET_KEY'),
+            algorithm='HS256'
+        )
+    except Exception as e:
+        return e
+
+
+def decode_auth(auth_token):
+    """
+    Decodes the auth token
+    :return: integer|string
+    """
+    try:
+        payload = jwt.decode(auth_token, app.config.get('SECRET_KEY'))
+        return payload['sub']
+    except jwt.InvalidTokenError:
+        return 'Invalid token. Please log in again.'
