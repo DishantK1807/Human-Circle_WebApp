@@ -34,7 +34,7 @@ def login():
         if rows or rv['pass'] == encode(hashlib.sha1(encode(request.form.get("password", 'utf-8'))).digest(),
                                         'hex_codec').decode('utf-8'):
             # create session
-            session['user_id']  = rv['id']
+            session['user_id']  = encode_auth(rv['id'])
             session['auth_lvl'] = int(rv['authlvl'])
             return redirect(url_for('index'))
 
@@ -103,7 +103,7 @@ def register():
             mysql.connection.commit()
 
             # create session
-            session['user_id']  = rv['id']
+            session['user_id']  = encode_auth(rv['id'])
             session['auth_lvl'] = int(rv['authlvl'])
 
         return redirect(url_for('index'))

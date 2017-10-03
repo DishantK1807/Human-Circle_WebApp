@@ -61,7 +61,7 @@ def index():
     # Candidate
     else:
         db = mysql.connection.cursor()
-        db.execute("SELECT * FROM candidates WHERE uid = {}".format(session['user_id']))
+        db.execute("SELECT * FROM candidates WHERE uid = {}".format(decode_auth(session['user_id'])))
         return render_template('candidate/index.html', user=db.fetchone())
 
 
