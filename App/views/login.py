@@ -111,3 +111,8 @@ def register():
     # else if user reached route via GET (as by clicking a link or via redirect)
     else:
         return render_template('register.html')
+
+
+@app.route('/developers', methods=['GET', 'POST'])
+def developers():
+	return render_template('dev.html')
