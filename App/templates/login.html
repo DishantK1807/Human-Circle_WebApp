@@ -23,6 +23,6 @@
         <div class="center-align">
             <p class="text-center">LOGIN VIA</p><img style="margin:5px" src="{{ url_for('static', filename='img/In.jpg') }}"><img style="margin:5px" src="{{ url_for('static', filename='img/Google.png') }}"><img style="margin:5px" src="{{ url_for('static', filename='img/FB.png') }}"></div>
     </div>
-    <div class="Register-card text-center"><strong><strong>Don't have an</strong> <strong>account?</strong> <a class="text-danger" href="#"><strong>Register</strong> <strong>here</strong></a></strong>
+    <div class="Register-card text-center"><strong><strong>Don't have an</strong> <strong>account?</strong> <a class="text-danger" href="{{ url_for('register') }}"><strong>Register</strong> <strong>here</strong></a></strong>
     </div>
 {% endblock %}
