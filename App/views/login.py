@@ -13,6 +13,49 @@
 from App.views.home import *
 
 
+def hashpass(password):
+    return encode(hashlib.sha1(encode(password)).digest(), 'hex_codec').decode('utf-8')
+
+
+def verify_user(email, password):
+    # query database for email
+    db = mysql.connection.cursor()
+    rows = db.execute("SELECT * FROM users WHERE email = '{}'".format(email))
+    rv = db.fetchone()
+
+    if not rows:
+        return False
+
+    # verify password
+    if rv['pass'] == hashpass(password):
+        # create session
+        session['user_id'] = encode_auth(rv['id'])
+        session['auth_lvl'] = int(rv['authlvl'])
+        return True
+    else:
+        return False
+
+
+def register_candidate(db, email, password, fname, lname, auth):
+    db.execute(
+        "INSERT IGNORE INTO users (email, pass, fname, lname, authlvl) VALUES ('{0}', '{1}', '{2}', '{3}', '{4}')".format(
+            email, password, fname, lname, auth))
+    mysql.connection.commit()
+
+    # get id and authlvl
+    db.execute("SELECT * FROM users WHERE email = '{}'".format(email))
+    rv = db.fetchone()
+
+    db.execute(
+        "INSERT IGNORE INTO candidates (uid, fname, lname, email) VALUES ('{0}', '{1}', '{2}', '{3}')".format(
+            rv['id'], fname, lname, email))
+    mysql.connection.commit()
+
+    # create session
+    session['user_id'] = encode_auth(rv['id'])
+    session['auth_lvl'] = int(rv['authlvl'])
+
+
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     """Log User In"""
@@ -25,19 +68,8 @@ def login():
         if not request.form.get("email") or not request.form.get("password"):
             return render_template('failure.html', msg='Email/Password fields cannot be empty')
 
-        # query database for email
-        db = mysql.connection.cursor()
-        rows = db.execute("SELECT * FROM users WHERE email = '{}'".format(request.form.get("email")))
-        rv = db.fetchone()
-
-        # verify password
-        if rows or rv['pass'] == encode(hashlib.sha1(encode(request.form.get("password", 'utf-8'))).digest(),
-                                        'hex_codec').decode('utf-8'):
-            # create session
-            session['user_id']  = encode_auth(rv['id'])
-            session['auth_lvl'] = int(rv['authlvl'])
+        if verify_user(request.form.get("email"), request.form.get("password", 'utf-8')) is True:
             return redirect(url_for('index'))
-
         else:
             return render_template('failure.html', msg="Invalid Email And/Or Password")
 
@@ -73,8 +105,8 @@ def register():
             return render_template('failure.html', msg='Email Already Exists')
 
         # hash password with SHA-1 algorithm and store it as string
-        password = encode(hashlib.sha1(encode(request.form.get("password", 'utf-8'))).digest(),
-                          'hex_codec').decode('utf-8')
+        password = hashpass(request.form.get("password", 'utf-8'))
+
 
         # add mentor and interviewer ids to temp table for approval
         if int(request.form.get("auth")) in {0, 1, 2}:
@@ -86,25 +118,8 @@ def register():
 
         # add candidate ids to main table
         else:
-            db.execute(
-                "INSERT IGNORE INTO users (email, pass, fname, lname, authlvl) VALUES ('{0}', '{1}', '{2}', '{3}', '{4}')".format(
-                    request.form.get("email"), password, request.form.get("fname"), request.form.get("lname"),
-                    request.form.get("auth")))
-            mysql.connection.commit()
-
-            # get id and authlvl
-            db.execute("SELECT * FROM users WHERE email = '{}'".format(request.form.get("email")))
-            rv = db.fetchone()
-
-            db.execute(
-                "INSERT IGNORE INTO candidates (uid, fname, lname, email) VALUES ('{0}', '{1}', '{2}', '{3}')".format(
-                    rv['id'], request.form.get("fname"), request.form.get("lname"), request.form.get("email")
-                ))
-            mysql.connection.commit()
-
-            # create session
-            session['user_id']  = encode_auth(rv['id'])
-            session['auth_lvl'] = int(rv['authlvl'])
+            register_candidate(db, request.form.get("email"),password, request.form.get("fname"),
+                               request.form.get("lname"), request.form.get("auth"))
 
         return redirect(url_for('index'))
 
