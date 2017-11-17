@@ -5,6 +5,6 @@ setup(
     packages=['App'],
     include_package_data=True,
     install_requires=[
-        'flask', 'flask-session', 'flask-mail', 'flask-mysqldb', 'pyjwt',
+        'flask', 'flask-session', 'flask-mail', 'flask-mysqldb', 'jwt', 'flask-oauthlib',
     ],
 )
