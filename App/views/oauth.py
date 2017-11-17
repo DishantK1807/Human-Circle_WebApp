@@ -1,4 +1,5 @@
 from App.views.home import *
+from App.views.login import hashpass, verify_user, register_candidate
 
 
 GOOGLE_CLIENT_ID = '418555457379-s4qrcjttitvokgckatucvsmd2dvokt44.apps.googleusercontent.com'
@@ -7,7 +8,7 @@ REDIRECT_URI = '/oauth2callback'
 
 
 google = oauth.remote_app('google',
-                          base_url='https://www.google.com/accounts/',
+                          base_url='https://www.googleapis.com/oauth2/v1/',
                           authorize_url='https://accounts.google.com/o/oauth2/auth',
                           request_token_url=None,
                           request_token_params={'scope': 'https://www.googleapis.com/auth/userinfo.email'},
@@ -26,10 +27,21 @@ def googleauth():
 @google.authorized_handler
 def authorized(resp):
     access_token = resp['access_token']
-    session['user_id'] = access_token, ''
-    return render_template('failure.html', msg=str(resp))
+    session['token'] = access_token, ''
+    user_data = google.get('userinfo').data
+    password = hashpass(user_data['id'])
+
+    db = mysql.connection.cursor()
+    rows = db.execute("SELECT * FROM users WHERE email = '{}'".format(user_data['email']))
+    rv = db.fetchone()
+
+    if verify_user(user_data['email'], str(user_data['id'])) is False:
+        register_candidate(db, user_data['email'], password, user_data['given_name'],
+                           user_data['family_name'], auth=int(3))
+    #return render_template('failure.html', msg=str(user_data))
+    return redirect(url_for('index'))
 
 
 @google.tokengetter
 def get_access_token():
-    return session.get('user_id')
+    return session.get('token')
