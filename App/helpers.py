@@ -68,5 +68,5 @@ def decode_auth(auth_token):
     try:
         payload = jwt.decode(auth_token, app.config.get('SECRET_KEY'))
         return payload['sub']
-    except jwt.InvalidTokenError:
+    except jwt.exceptions.InvalidTokenError:
         return 'Invalid token. Please log in again.'

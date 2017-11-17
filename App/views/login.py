@@ -130,4 +130,4 @@ def register():
 
 @app.route('/developers', methods=['GET', 'POST'])
 def developers():
-	return render_template('dev.html')
+    return render_template('dev.html')
