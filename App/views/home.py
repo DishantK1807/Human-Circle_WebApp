@@ -6,11 +6,13 @@ from flask import Flask, request, render_template
 from flask_mysqldb import MySQL
 from flask_session import Session
 from flask_mail import Message
+from flask_oauthlib.client import OAuth
 
 from App.helpers import *
 from App import app
 from App import mysql
 from App import mail
+from App import oauth
 
 from App.views import admin
 from App.views import interviewer
