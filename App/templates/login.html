@@ -24,7 +24,7 @@
             <p class="text-center">LOGIN VIA</p>
             <img style="margin:5px" src="{{ url_for('static', filename='img/In.jpg') }}">
             <a href="{{ url_for('googleauth') }}"><img style="margin:5px" src="{{ url_for('static', filename='img/Google.png') }}"></a>
-            <img style="margin:5px" src="{{ url_for('static', filename='img/FB.png') }}">
+            <a href="{{ url_for('facebookauth') }}"><img style="margin:5px" src="{{ url_for('static', filename='img/FB.png') }}"></a>
         </div>
     </div>
     <div class="Register-card text-center"><strong><strong>Don't have an</strong> <strong>account?</strong> <a class="text-danger" href="{{ url_for('register') }}"><strong>Register</strong> <strong>here</strong></a></strong>
