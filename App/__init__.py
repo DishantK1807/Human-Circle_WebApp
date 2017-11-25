@@ -37,6 +37,7 @@ from App.helpers import *
 from App.views import home
 from App.views import login
 from App.views import oauth
+from App.views import fbauth
 from App.views import admin
 from App.views import candidate
 from App.views import interviewer
